@@ -10,9 +10,14 @@ class DepartmentController extends Controller
 {
     public function index()
     {
-        //elequent ORM
+    
         $department=Department::all();
         return view('employee_record.department.index',compact('department'));
+    }
+    public function trash()
+    {
+        $trash=Department::onlyTrashed()->get();
+        return view('employee_record.department.trash',compact('trash'));
     }
     public function create()
     {
@@ -34,7 +39,19 @@ class DepartmentController extends Controller
     public function delete($id)
     {
         Department::destroy($id);
-        $notification=array('messege' =>'Department Deleted!' ,'alert-type'=>'success' );
+        $notification=array('messege' =>'Department  Soft Deleted!' ,'alert-type'=>'success' );
+        return redirect()->back()->with($notification);
+    }
+    public function restore($id)
+    {
+        Department::withTrashed()->findOrFail($id)->restore();
+        $notification=array('messege' =>'Department Restored!' ,'alert-type'=>'success' );
+        return redirect()->back()->with($notification);
+    }
+    public function PDelete($id)
+    {
+        Department::onlyTrashed()->findOrFail($id)->forceDelete();
+        $notification=array('messege' =>'Department Parmanently Deleted!' ,'alert-type'=>'success' );
         return redirect()->back()->with($notification);
     }
     public function edit($id)

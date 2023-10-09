@@ -11,9 +11,12 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
               <a href="{{route('create.department')}}" class="btn btn-primary">+Add New</a>
-
           </ol>
+          <ol class="breadcrumb float-sm-right">
+            <a href="{{route('department.trash')}}" class="btn btn-primary">Trash List</a>
+        </ol>
         </div>
+
       </div>
   </div>
 
@@ -59,5 +62,9 @@
           </div>
       </section>
   </div>
+  </div>
+
+
+  
 
 @endsection

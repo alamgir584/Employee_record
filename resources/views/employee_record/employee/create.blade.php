@@ -4,6 +4,12 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
+          <div class="col-sm-12">
+            <ol class="breadcrumb float-sm-right">
+                <a href="{{route('employee.index')}}" class="btn btn-primary">Show list</a>
+  
+            </ol>
+          </div>
         </div>
       </div>
     </div>

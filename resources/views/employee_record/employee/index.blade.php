@@ -11,8 +11,10 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
               <a href="{{route('create.employee')}}" class="btn btn-primary">+Add New</a>
-
           </ol>
+          <ol class="breadcrumb float-sm-right">
+            <a href="{{route('employee.trash')}}" class="btn btn-primary">Trash List</a>
+        </ol>
         </div>
       </div>
   </div>
@@ -66,5 +68,5 @@
           </div>
       </section>
   </div>
-
+  </div>
 @endsection

@@ -14,8 +14,15 @@ class EmployeeController extends Controller
     public function index()
     {
         $department=Department::all();
-        $employee=Employee::all();  
-        return view('employee_record.employee.index',compact('employee','department'));
+        $employee=Employee::all(); 
+        $trash=Employee::onlyTrashed()->get(); 
+        return view('employee_record.employee.index',compact('employee','department','trash'));
+    }
+
+    public function trash()
+    {
+        $trash=Employee::onlyTrashed()->get(); 
+        return view('employee_record.employee.trash',compact('trash'));
     }
     public function create()
     {
@@ -55,15 +62,33 @@ class EmployeeController extends Controller
     }
     public function delete($id)
     {
-        $employee=DB::table('employees')->where('id',$id)->first();  //product data get
-        if (File::exists($employee->image)) {
-              FIle::delete($employee->image);
-        }
-    	DB::table('employees')->where('id',$id)->delete();
-    	$notification=array('messege' => 'Employee Deleted!', 'alert-type' => 'success');
+    	Employee::destroy($id);
+    	$notification=array('messege' => 'Employee Soft Deleted!', 'alert-type' => 'success');
     	return redirect()->back()->with($notification);
 
     }
+
+    public function restore($id)
+    {
+        Employee::withTrashed()->findOrFail($id)->restore();
+        $notification=array('messege' =>'Employee Restored!' ,'alert-type'=>'success' );
+        return redirect()->back()->with($notification);
+    }
+
+    public function PDelete($id)
+    {
+        //Model::withTrashed()->find(1)
+        $employee=Employee::withTrashed()->find($id);
+        if (File::exists($employee->image)) {
+              FIle::delete($employee->image);
+        }
+        
+        Employee::onlyTrashed()->findOrFail($id)->forceDelete();
+        
+        $notification=array('messege' =>'Employee Parmanently Deleted!' ,'alert-type'=>'success' );
+        return redirect()->back()->with($notification);
+    }
+
 
     public function edit($id)
     {
